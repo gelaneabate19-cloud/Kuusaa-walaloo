@@ -1,260 +1,403 @@
 <!DOCTYPE html>
 <html lang="om">
 <head>
-    <meta name="google-site-verification" content="3GnWQ0uMWKRclyfgfNYKexr8YVUUV3MJOS3pPofBzjQ" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuusaa Walaloo - Oromo Poetry App</title>
+    <title>Kuusaa Walaloo TAH</title>
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="google3ba0beb53a06ae87" />
+    <meta name="description" content="Kuusaa Walaloo - Appii Walaloo Afaan Oromoo kan Tesfamichael Abate fi Mamo tiin qophaa'e.">
+    <meta name="keywords" content="Kuusaa Walaloo, Walaloo Afaan Oromoo, Tesfamichael Abate, Oromo poetry, Bishoftu, UDE">
+    
     <style>
-        :root {
-            --primary-color: #1e3c72;
-            --secondary-color: #2a5298;
-            --accent-color: #ff9f43;
-            --bg-color: #f5f7fa;
-            --text-color: #333333;
-            --card-bg: #ffffff;
-            --font-size-base: 16px;
-        }
-
-        .dark-theme {
-            --bg-color: #12192c;
-            --text-color: #f5f7fa;
-            --card-bg: #1e2942;
-            --primary-color: #ff9f43;
-            --secondary-color: #f5f7fa;
-        }
-
+        /* --- Anti-Copy Settings --- */
         body {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: var(--font-size-base);
             transition: background 0.3s, color 0.3s;
         }
 
-        header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        /* Dark Mode Preferences */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        /* Header Style */
+        .header {
+            background-color: #1a365d;
             color: white;
-            padding: 15px 20px;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .menu-btn { font-size: 24px; background: none; border: none; color: white; cursor: pointer; }
-        header h1 { margin: 0; font-size: 20px; }
+        .menu-btn, .theme-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-        /* SIDEBAR */
+        /* Sidebar Menu */
         .sidebar {
-            position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
-            background-color: #12192c; color: white; box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-            transition: 0.3s ease; z-index: 200; padding-top: 20px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #111c24;
+            color: white;
+            transition: 0.3s;
+            z-index: 1000;
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
         }
-        .sidebar.active { left: 0; }
-        .sidebar-header { padding: 10px 20px; border-bottom: 1px solid #2d3748; font-weight: bold; font-size: 18px; color: var(--accent-color); display: flex; justify-content: space-between; align-items: center; }
-        .close-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .sidebar-menu { list-style: none; padding: 0; margin: 20px 0; }
-        .sidebar-menu li a { display: block; padding: 15px 20px; color: #e2e8f0; text-decoration: none; font-size: 16px; border-bottom: 1px solid #1a233a; }
-        .sidebar-menu li a:hover { background-color: #1e2942; color: var(--accent-color); padding-left: 30px; }
 
-        /* OVERLAY */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 150; }
-        .overlay.active { display: block; }
-
-        /* CONTENT */
-        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; padding-bottom: 120px; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid #ff9f43; }
-        .poem-content { font-style: italic; line-height: 1.8; white-space: pre-line; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 8px; margin-top: 10px; }
-
-        /* KUTAA WALALOO BARREESSAN (Poetry Writer) */
-        .writer-card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid var(--accent-color); }
-        .writer-card h3 { margin: 0 0 15px 0; color: var(--accent-color); }
-        .input-field { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; background: var(--bg-color); color: var(--text-color); font-size: 15px; }
-        .textarea-field { height: 120px; resize: none; }
-        .btn-submit { background: linear-gradient(135deg, #ff9f43, #ff7f11); color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
-
-        /* MODAL BOX FOR SETTINGS */
-        .modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-            width: 90%; max-width: 400px; background: var(--card-bg); color: var(--text-color);
-            padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: none; z-index: 300; transition: 0.3s ease;
+        .sidebar.active {
+            left: 0;
         }
-        .modal.active { display: block; transform: translate(-50%, -50%) scale(1); }
-        .modal-header { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #ff9f43; display: flex; justify-content: space-between; }
-        .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); }
-        .btn-toggle, .btn-size { background: #1e3c72; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .btn-size { background: #ff9f43; margin-left: 5px; }
 
-        .footer-info { font-size: 12px; color: gray; text-align: center; margin-top: 15px; }
+        .sidebar a {
+            padding: 15px 20px;
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Form Style */
+        .form-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 2px solid #fdba74;
+            margin-bottom: 25px;
+        }
+
+        body.dark-mode .form-box {
+            background: #1e1e1e;
+            border-color: #ea580c;
+        }
+
+        .form-box h3 {
+            color: #ea580c;
+            margin-top: 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        body.dark-mode input, body.dark-mode textarea {
+            background: #2d2d2d;
+            color: white;
+            border-color: #444;
+        }
+
+        .submit-btn {
+            background-color: #ea580c;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Poem Card Style */
+        .poem-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 5px solid #ea580c;
+            margin-bottom: 20px;
+        }
+
+        body.dark-mode .poem-card {
+            background: #1e1e1e;
+        }
+
+        .poem-header {
+            display: flex;
+            justify-content: space-between;
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .poem-title {
+            color: #ea580c;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+
+        .poem-content {
+            font-style: italic;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* --- Like, Comment & Subscribe Buttons --- */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        body.dark-mode .action-bar {
+            border-top-color: #333;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .like-btn.liked {
+            color: #ef4444;
+        }
+
+        .tg-btn {
+            background-color: #0088cc;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Comment Section style */
+        .comment-box {
+            margin-top: 15px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        body.dark-mode .comment-box {
+            background: #252525;
+        }
+
+        .comment-list {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+            font-size: 13px;
+        }
+
+        .comment-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        body.dark-mode .comment-item {
+            border-bottom-color: #333;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="header-left">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <h1>📦 Kuusaa Walaloo</h1>
-        </div>
-    </header>
-
     <!-- Sidebar Menu -->
-    <div class="sidebar" id="mySidebar">
-        <div class="sidebar-header">
-            <span>Menu Filannoo</span>
-            <button class="close-btn" onclick="toggleSidebar()">✕</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" onclick="closeAll()">📝 Walaloo Haarota</a></li>
-            <li><a href="#" onclick="alert('Kutaa Walaloo Jaalalaa dhiyoon baha')">❤️ Walaloo Jaalalaa</a></li>
-            <li><a href="#" onclick="alert('Kutaa Walaloo Safuu dhiyoon baha')">✊ Walaloo Gootummaa & Safuu</a></li>
-            <li><a href="#" onclick="openSettings()">⚙️ Settings (Qindaa'ina)</a></li>
-        </ul>
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+        <a href="#">📝 Walaloo Haarota</a>
+        <a href="#">❤️ Walaloo Jaalalaa</a>
+        <a href="#">😇 Gootummaa & Safuu</a>
+        <a href="#" onclick="toggleTheme()">⚙️ Settings (Qindaa'ina)</a>
     </div>
 
-    <div class="overlay" id="myOverlay" onclick="closeAll()"></div>
-
-    <!-- Settings Box (Modal) -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-header">
-            <span>⚙️ Qindaa'ina Appii</span>
-            <span style="cursor:pointer;" onclick="closeSettings()">✕</span>
+    <!-- Header -->
+    <div class="header">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div style="font-weight: bold; display: flex; align-items: center; gap: 5px;">
+            📦 Kuusaa Walaloo
         </div>
-        <div class="setting-item">
-            <span>Dark Mode (Dukkana)</span>
-            <button class="btn-toggle" onclick="toggleDarkMode()">Jijjiiri</button>
-        </div>
-        <div class="setting-item">
-            <span>Guddina Barruu</span>
-            <div>
-                <button class="btn-size" onclick="changeFontSize('up')">Aa+</button>
-                <button class="btn-size" onclick="changeFontSize('down')">Aa-</button>
-            </div>
-        </div>
-        <div class="footer-info">
-            <strong>Kuusaa Walaloo v9.5</strong><br>
-            Designed & Developed by Grade 11A Students<br>
-            Tesfamichael & Mamo !!
-        </div>
+        <button class="theme-btn" onclick="toggleTheme()">⭐</button>
     </div>
 
-    <!-- Main Content Container -->
     <div class="container">
-        
-        <!-- FEATURE HAARAA: IDDOO WALALOO ITTIIN BARREESSAN -->
-        <div class="writer-card">
+        <!-- Input Form -->
+        <div class="form-box">
             <h3>✍️ Walaloo Haaraa Barreessi</h3>
-            <input type="text" id="poemTitle" class="input-field" placeholder="Mata-duree Walaloo...">
-            <input type="text" id="poemAuthor" class="input-field" placeholder="Maqaa Barreessaa (Fkn: Tesfamichael)...">
-            <textarea id="poemBody" class="input-field textarea-field" placeholder="Walaloo kee asirratti dhangalaasi..."></textarea>
-            <button class="btn-submit" onclick="publishPoem()">🚀 Gara Kuusaatti Maxxansi</button>
+            <input type="text" id="titleInput" placeholder="Mata-duree Walaloo...">
+            <input type="text" id="authorInput" placeholder="Maqaa Barreessaa (Fkn: Tesfamichael)...">
+            <textarea id="contentInput" rows="5" placeholder="Walaloo kee asirratti dhangalaasi..."></textarea>
+            <button class="submit-btn" onclick="addPoem()">🚀 Gara Kuusaatti Maxxansi</button>
         </div>
 
-        <!-- IDDOO WALALOONNI ITTI MAXXANFAMAN -->
-        <div id="poetryFeed">
-            <!-- Walaloo Ganamaa (Default) -->
-            <div class="card">
-                <div style="display:flex; justify-content:between; align-items:center;">
-                    <strong style="color:#ff9f43;">Jaalala fi Safuu</strong>
-                    <small style="color:gray; font-size:12px;">By Tesfamichael Abate</small>
-                </div>
-                <div class="poem-content">
-                    Aadaa kee tiin booni, eenyummaa kee eeggi,
-                    Safuun saba keetii, qabeenya kee guddaa.
-                    Hundee kee ganamaa, dhiiga keetiin uumi,
-                    Addunyaa irratti, mul'isi kabajaa hundaa!
-                </div>
-            </div>
-        </div>
-
+        <!-- Poems Holder -->
+        <div id="poemsContainer"></div>
     </div>
 
     <script>
-        let currentFontSize = 16;
-        const sidebar = document.getElementById('mySidebar');
-        const overlay = document.getElementById('myOverlay');
-        const modal = document.getElementById('settingsModal');
-        const poetryFeed = document.getElementById('poetryFeed');
+        // --- Anti-Copy Script (Right Click Shield) ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+                e.preventDefault();
+            }
+        });
 
-        // Yeroo Appiin banamu walaloota kuusaa jiran fiduu
-        window.onload = function() {
-            loadPoems();
-        };
-
-        function toggleSidebar() { sidebar.classList.toggle('active'); overlay.classList.toggle('active'); }
-        function openSettings() { sidebar.classList.remove('active'); modal.classList.add('active'); overlay.classList.add('active'); }
-        function closeSettings() { modal.classList.remove('active'); overlay.classList.remove('active'); }
-        function closeAll() { sidebar.classList.remove('active'); modal.classList.remove('active'); overlay.classList.remove('active'); }
-        function toggleDarkMode() { document.body.classList.toggle('dark-theme'); }
-
-        function changeFontSize(action) {
-            if(action === 'up' && currentFontSize < 24) currentFontSize += 2;
-            else if(action === 'down' && currentFontSize > 12) currentFontSize -= 2;
-            document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+        // Sidebar & Theme Logic
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // FUNKSHINII WALALOO HAARAA MAXXANSU
-        function publishPoem() {
-            const title = document.getElementById('poemTitle').value;
-            const author = document.getElementById('poemAuthor').value;
-            const body = document.getElementById('poemBody').value;
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
 
-            if(!title || !author || !body) {
-                alert("Maaloo, bakka duudaa jiru hunda guuti!");
+        if(localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Core App Data Logic (Local Storage)
+        let poems = JSON.parse(localStorage.getItem('kuusaa_poems')) || [
+            {
+                id: 1,
+                title: "Jaalala fi Safuu",
+                author: "Tesfamichael Abate",
+                content: "Aadaa kee tiin booni, eenyummaa kee eeggi,\nSafuun saba keetii, qabeenya kee guddaa.\nHundee kee ganamaa, dhiiga keetiin uumi,\nAddunyaa irratti, mul'isi kabajaa hundaa!",
+                likes: 0,
+                comments: []
+            }
+        ];
+
+        function saveAndRender() {
+            localStorage.setItem('kuusaa_poems', JSON.stringify(poems));
+            renderPoems();
+        }
+
+        function addPoem() {
+            const title = document.getElementById('titleInput').value.trim();
+            const author = document.getElementById('authorInput').value.trim() || "Tesfamichael Abate";
+            const content = document.getElementById('contentInput').value.trim();
+
+            if(!title || !content) {
+                alert("Maaloo mata-duree fi qabiyyee walaloo guuti!");
                 return;
             }
 
-            const newPoem = { title, author, body };
-            let localPoems = JSON.parse(localStorage.getItem('myPoems')) || [];
-            localPoems.unshift(newPoem); // Gara gubbaatti dabalame
-            localStorage.setItem('myPoems', JSON.stringify(localPoems));
+            const newPoem = {
+                id: Date.now(),
+                title: title,
+                author: author,
+                content: content,
+                likes: 0,
+                comments: []
+            };
 
-            // Form qulqulleessuuf
-            document.getElementById('poemTitle').value = '';
-            document.getElementById('poemAuthor').value = '';
-            document.getElementById('poemBody').value = '';
+            poems.unshift(newPoem);
+            saveAndRender();
 
-            loadPoems();
-            alert("Baga gammadde, Walaloon kee maxxanfameera!");
+            // Clear inputs
+            document.getElementById('titleInput').value = '';
+            document.getElementById('contentInput').value = '';
         }
 
-        // WALALOOTA LOCAL STORAGE IRRAA FIDU
-        function loadPoems() {
-            let localPoems = JSON.parse(localStorage.getItem('myPoems')) || [];
-            let defaultPoem = `
-                <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <strong style="color:#ff9f43;">Jaalala fi Safuu</strong>
-                        <small style="color:gray; font-size:12px;">By Tesfamichael Abate</small>
+        function toggleLike(id) {
+            const poem = poems.find(p => p.id === id);
+            if(poem) {
+                poem.likes += 1;
+                saveAndRender();
+            }
+        }
+
+        function addComment(id, event) {
+            if(event.key === 'Enter') {
+                const input = event.target;
+                const text = input.value.trim();
+                if(!text) return;
+
+                const poem = poems.find(p => p.id === id);
+                if(poem) {
+                    poem.comments.push(text);
+                    input.value = '';
+                    saveAndRender();
+                }
+            }
+        }
+
+        function renderPoems() {
+            const container = document.getElementById('poemsContainer');
+            container.innerHTML = '';
+
+            poems.forEach(poem => {
+                const card = document.createElement('div');
+                card.className = 'poem-card';
+
+                let commentItems = poem.comments.map(c => `<li class="comment-item">💬 ${c}</li>`).join('');
+
+                card.innerHTML = `
+                    <div class="poem-header">
+                        <span style="font-weight: bold; color: #ea580c;">${poem.title}</span>
+                        <span>By ${poem.author}</span>
                     </div>
-                    <div class="poem-content">
-                        Aadaa kee tiin booni, eenyummaa kee eeggi,\nSafuun saba keetii, qabeenya kee guddaa.\nHundee kee ganamaa, dhiiga keetiin uumi,\nAddunyaa irratti, mul'isi kabajaa hundaa!
+                    <div class="poem-content">${poem.content}</div>
+                    
+                    <div class="action-bar">
+                        <button class="like-btn ${poem.likes > 0 ? 'liked' : ''}" onclick="toggleLike(${poem.id})">
+                            ❤️ <span>${poem.likes}</span> Like
+                        </button>
+                        <!-- Change link to your real Telegram channel link below -->
+                        <a href="https://t.me/your_telegram_channel_username" target="_blank" class="tg-btn">📢 Subscribe</a>
                     </div>
-                </div>
-            `;
-            
-            let html = defaultPoem;
-            localPoems.forEach(p => {
-                html += `
-                    <div class="card">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <strong style="color:#ff9f43;">${p.title}</strong>
-                            <small style="color:gray; font-size:12px;">By ${p.author}</small>
-                        </div>
-                        <div class="poem-content">${p.body}</div>
+
+                    <div class="comment-box">
+                        <input type="text" placeholder="Yaada kee barreessiiti Enter tuqi..." onkeypress="addComment(${poem.id}, event)">
+                        <ul class="comment-list">${commentItems}</ul>
                     </div>
                 `;
+                container.appendChild(card);
             });
-            poetryFeed.innerHTML = html;
         }
+
+        // Initial Load
+        renderPoems();
     </script>
 </body>
 </html>
