@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuusaa Walaloo - Oromo Poetry App</title>
+    <style>
+        :root {
+            --primary-color: #1e3c72;
+            --secondary-color: #2a5298;
+            --accent-color: #ff9800;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header / Nav Bar */
+        header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-badge {
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .app-container {
+            flex: 1;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+            padding-bottom: 90px;
+        }
+
+        /* Poetry Card Layout */
+        .poetry-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .post-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .poetry-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .poetry-content {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
+            color: #444;
+            font-style: italic;
+            background-color: #fafafa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        /* Like Counter */
+        .interaction-panel {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .like-btn.liked {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        /* Admin Input Panel (Bottom Drawer) */
+        .admin-panel {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
+            padding: 12px;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            z-index: 99;
+        }
+
+        .admin-toggle-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-content {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-group textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>📜 Kuusaa Walaloo</h1>
+        <div class="admin-badge">Admin Mode</div>
+    </header>
+
+    <!-- Main Container for Feed -->
+    <div class="app-container" id="poetryContainer">
+        <!-- Sample Initial Post -->
+        <div class="poetry-card">
+            <div class="card-header">
+                <div class="author-info">
+                    <div class="avatar">TA</div>
+                    <div>
+                        <div class="author-name">Tesfamichael Abate</div>
+                        <div class="post-time">Amma</div>
+                    </div>
+                </div>
+            </div>
+            <div class="poetry-title">Jaalala fi Safuu</div>
+            <div class="poetry-content">Aadaa kee tiin booni, eenyummaa kee eeggi,
+Safuun saba keetii, qabeenya kee guddaa,
+Hundee kee ganamaa, dhiiga keetiin uumi,
+Addunyaa irratti, mul'isi kabajaa hundaa!</div>
+            <div class="interaction-panel">
+                <button class="like-btn" onclick="toggleLike(this)">❤️ <span class="like-count">12</span> Jaallatameera</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Control at the Bottom -->
+    <div class="admin-panel">
+        <button class="admin-toggle-btn" onclick="toggleAdminForm()">✍️ Walaloo Haaraa Maxxansi (Admin Qofa)</button>
+        <div class="form-content" id="adminForm">
+            <div class="input-group">
+                <input type="text" id="poemTitle" placeholder="Mata duree walaloo...">
+            </div>
+            <div class="input-group">
+                <textarea id="poemBody" placeholder="Walaloo kee as irratti barreessi..."></textarea>
+            </div>
+            <button class="submit-btn" onclick="publishPoem()">🚀 Gara Hawaasatti Maxxansi</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleAdminForm() {
+            const form = document.getElementById('adminForm');
+            form.classList.toggle('active');
+        }
+
+        function toggleLike(button) {
+            button.classList.toggle('liked');
+            const countSpan = button.querySelector('.like-count');
+            let currentCount = parseInt(countSpan.innerText);
+            
+            if (button.classList.contains('liked')) {
+                countSpan.innerText = currentCount + 1;
+            } else {
+                countSpan.innerText = currentCount - 1;
+            }
+        }
+
+        function publishPoem() {
+            const titleInput = document.getElementById('poemTitle');
+            const bodyInput = document.getElementById('poemBody');
+
+            if (!titleInput.value.trim() || !bodyInput.value.trim()) {
+                alert('Maaloo! Mata duree fi qabiyyee walaloo guuti.');
+                return;
+            }
+
+            const container = document.getElementById('poetryContainer');
+            const newCard = document.createElement('div');
+            newCard.className = 'poetry-card';
+
+            newCard.innerHTML = `
+                <div class="card-header">
+                    <div class="author-info">
+                        <div class="avatar">TA</div>
+                        <div>
+                            <div class="author-name">Tesfamichael Abate</div>
+                            <div class="post-time">Amma</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="poetry-title">${escapeHTML(titleInput.value)}</div>
+                <div class="poetry-content">${escapeHTML(bodyInput.value)}</div>
+                <div class="interaction-panel">
+                    <button class="like-btn" onclick="toggleLike(this)">❤️ <span class="like-count">0</span> Jaallatameera</button>
+                </div>
+            `;
+
+            container.insertBefore(newCard, container.firstChild);
+
+            titleInput.value = '';
+            bodyInput.value = '';
+            toggleAdminForm();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
