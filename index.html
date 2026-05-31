@@ -15,7 +15,6 @@
             --font-size-base: 16px;
         }
 
-        /* Dark Mode Colors */
         .dark-theme {
             --bg-color: #12192c;
             --text-color: #f5f7fa;
@@ -69,11 +68,18 @@
         .overlay.active { display: block; }
 
         /* CONTENT */
-        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; padding-bottom: 100px; }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; padding-bottom: 120px; }
         .card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid #ff9f43; }
-        .poem-content { font-style: italic; line-height: 1.8; white-space: pre-line; background: rgba(0,0,0,0.02); padding: 15px; border-radius: 8px; }
+        .poem-content { font-style: italic; line-height: 1.8; white-space: pre-line; background: rgba(0,0,0,0.03); padding: 15px; border-radius: 8px; margin-top: 10px; }
 
-        /* SETTINGS MODAL BOX (Saanduqa Qindaa'inaa) */
+        /* KUTAA WALALOO BARREESSAN (Poetry Writer) */
+        .writer-card { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px; border: 1px solid var(--accent-color); }
+        .writer-card h3 { margin: 0 0 15px 0; color: var(--accent-color); }
+        .input-field { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; background: var(--bg-color); color: var(--text-color); font-size: 15px; }
+        .textarea-field { height: 120px; resize: none; }
+        .btn-submit { background: linear-gradient(135deg, #ff9f43, #ff7f11); color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+
+        /* MODAL BOX FOR SETTINGS */
         .modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
             width: 90%; max-width: 400px; background: var(--card-bg); color: var(--text-color);
@@ -106,7 +112,7 @@
             <button class="close-btn" onclick="toggleSidebar()">✕</button>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" onclick="toggleSidebar()">📝 Walaloo Haarota</a></li>
+            <li><a href="#" onclick="closeAll()">📝 Walaloo Haarota</a></li>
             <li><a href="#" onclick="alert('Kutaa Walaloo Jaalalaa dhiyoon baha')">❤️ Walaloo Jaalalaa</a></li>
             <li><a href="#" onclick="alert('Kutaa Walaloo Safuu dhiyoon baha')">✊ Walaloo Gootummaa & Safuu</a></li>
             <li><a href="#" onclick="openSettings()">⚙️ Settings (Qindaa'ina)</a></li>
@@ -121,14 +127,10 @@
             <span>⚙️ Qindaa'ina Appii</span>
             <span style="cursor:pointer;" onclick="closeSettings()">✕</span>
         </div>
-        
-        <!-- 1. Dark Mode -->
         <div class="setting-item">
             <span>Dark Mode (Dukkana)</span>
             <button class="btn-toggle" onclick="toggleDarkMode()">Jijjiiri</button>
         </div>
-
-        <!-- 2. Font Size -->
         <div class="setting-item">
             <span>Guddina Barruu</span>
             <div>
@@ -136,26 +138,42 @@
                 <button class="btn-size" onclick="changeFontSize('down')">Aa-</button>
             </div>
         </div>
-
-        <!-- 3. About -->
         <div class="footer-info">
-            <strong>Kuusaa Walaloo v9.3</strong><br>
+            <strong>Kuusaa Walaloo v9.5</strong><br>
             Designed & Developed by Grade 11A Students<br>
             Tesfamichael & Mamo !!
         </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Content Container -->
     <div class="container">
-        <div class="card">
-            <h2 style="margin:0 0 10px 0;">Baga Gammaddan!</h2>
-            <div class="poem-content" id="poemBox">
-                Aadaa kee tiin booni, eenyummaa kee eeggi,
-                Safuun saba keetii, qabeenya kee guddaa.
-                Hundee kee ganamaa, dhiiga keetiin uumi,
-                Addunyaa irratti, mul'isi kabajaa hundaa!
+        
+        <!-- FEATURE HAARAA: IDDOO WALALOO ITTIIN BARREESSAN -->
+        <div class="writer-card">
+            <h3>✍️ Walaloo Haaraa Barreessi</h3>
+            <input type="text" id="poemTitle" class="input-field" placeholder="Mata-duree Walaloo...">
+            <input type="text" id="poemAuthor" class="input-field" placeholder="Maqaa Barreessaa (Fkn: Tesfamichael)...">
+            <textarea id="poemBody" class="input-field textarea-field" placeholder="Walaloo kee asirratti dhangalaasi..."></textarea>
+            <button class="btn-submit" onclick="publishPoem()">🚀 Gara Kuusaatti Maxxansi</button>
+        </div>
+
+        <!-- IDDOO WALALOONNI ITTI MAXXANFAMAN -->
+        <div id="poetryFeed">
+            <!-- Walaloo Ganamaa (Default) -->
+            <div class="card">
+                <div style="display:flex; justify-content:between; align-items:center;">
+                    <strong style="color:#ff9f43;">Jaalala fi Safuu</strong>
+                    <small style="color:gray; font-size:12px;">By Tesfamichael Abate</small>
+                </div>
+                <div class="poem-content">
+                    Aadaa kee tiin booni, eenyummaa kee eeggi,
+                    Safuun saba keetii, qabeenya kee guddaa.
+                    Hundee kee ganamaa, dhiiga keetiin uumi,
+                    Addunyaa irratti, mul'isi kabajaa hundaa!
+                </div>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -163,40 +181,78 @@
         const sidebar = document.getElementById('mySidebar');
         const overlay = document.getElementById('myOverlay');
         const modal = document.getElementById('settingsModal');
+        const poetryFeed = document.getElementById('poetryFeed');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        }
+        // Yeroo Appiin banamu walaloota kuusaa jiran fiduu
+        window.onload = function() {
+            loadPoems();
+        };
 
-        function openSettings() {
-            sidebar.classList.remove('active');
-            modal.classList.add('active');
-            overlay.classList.add('active');
-        }
-
-        function closeSettings() {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-
-        function closeAll() {
-            sidebar.classList.remove('active');
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-theme');
-        }
+        function toggleSidebar() { sidebar.classList.toggle('active'); overlay.classList.toggle('active'); }
+        function openSettings() { sidebar.classList.remove('active'); modal.classList.add('active'); overlay.classList.add('active'); }
+        function closeSettings() { modal.classList.remove('active'); overlay.classList.remove('active'); }
+        function closeAll() { sidebar.classList.remove('active'); modal.classList.remove('active'); overlay.classList.remove('active'); }
+        function toggleDarkMode() { document.body.classList.toggle('dark-theme'); }
 
         function changeFontSize(action) {
-            if(action === 'up' && currentFontSize < 24) {
-                currentFontSize += 2;
-            } else if(action === 'down' && currentFontSize > 12) {
-                currentFontSize -= 2;
-            }
+            if(action === 'up' && currentFontSize < 24) currentFontSize += 2;
+            else if(action === 'down' && currentFontSize > 12) currentFontSize -= 2;
             document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+        }
+
+        // FUNKSHINII WALALOO HAARAA MAXXANSU
+        function publishPoem() {
+            const title = document.getElementById('poemTitle').value;
+            const author = document.getElementById('poemAuthor').value;
+            const body = document.getElementById('poemBody').value;
+
+            if(!title || !author || !body) {
+                alert("Maaloo, bakka duudaa jiru hunda guuti!");
+                return;
+            }
+
+            const newPoem = { title, author, body };
+            let localPoems = JSON.parse(localStorage.getItem('myPoems')) || [];
+            localPoems.unshift(newPoem); // Gara gubbaatti dabalame
+            localStorage.setItem('myPoems', JSON.stringify(localPoems));
+
+            // Form qulqulleessuuf
+            document.getElementById('poemTitle').value = '';
+            document.getElementById('poemAuthor').value = '';
+            document.getElementById('poemBody').value = '';
+
+            loadPoems();
+            alert("Baga gammadde, Walaloon kee maxxanfameera!");
+        }
+
+        // WALALOOTA LOCAL STORAGE IRRAA FIDU
+        function loadPoems() {
+            let localPoems = JSON.parse(localStorage.getItem('myPoems')) || [];
+            let defaultPoem = `
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="color:#ff9f43;">Jaalala fi Safuu</strong>
+                        <small style="color:gray; font-size:12px;">By Tesfamichael Abate</small>
+                    </div>
+                    <div class="poem-content">
+                        Aadaa kee tiin booni, eenyummaa kee eeggi,\nSafuun saba keetii, qabeenya kee guddaa.\nHundee kee ganamaa, dhiiga keetiin uumi,\nAddunyaa irratti, mul'isi kabajaa hundaa!
+                    </div>
+                </div>
+            `;
+            
+            let html = defaultPoem;
+            localPoems.forEach(p => {
+                html += `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#ff9f43;">${p.title}</strong>
+                            <small style="color:gray; font-size:12px;">By ${p.author}</small>
+                        </div>
+                        <div class="poem-content">${p.body}</div>
+                    </div>
+                `;
+            });
+            poetryFeed.innerHTML = html;
         }
     </script>
 </body>
